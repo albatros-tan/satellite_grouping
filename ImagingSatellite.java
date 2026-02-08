@@ -8,7 +8,7 @@ public class ImagingSatellite extends Satellite {
     }
 
     private void takePhoto() {
-        if (this.isActive) {
+        if (this.state.getState()) {
             this.photosTaken++;
             this.log.info(
                     this.name,
@@ -26,7 +26,7 @@ public class ImagingSatellite extends Satellite {
 
     @Override
     public void performMission() {
-        if (this.isActive) {
+        if (this.state.getState()) {
             this.log.info(
                     this.name,
                     "Съемка территории с разрешением " + getResolution() + " м/пиксель");
@@ -41,7 +41,7 @@ public class ImagingSatellite extends Satellite {
     public String toString() {
         return "ImagingSatellite{resolution=" + getResolution() +
                 ", photosTaken=" + getPhotosTaken() + ", name='" +
-                this.name + "', isActive=" + this.isActive +
-                ", batteryLevel=" + this.batteryLevel + "}";
+                this.name + "', isActive=" + this.state.getState() +
+                ", batteryLevel=" + this.energy.getBatteryLevel() + "}";
     }
 }

@@ -16,10 +16,10 @@ public class CommunicationSatellite extends Satellite {
 
     @Override
     public void performMission() {
-        if (this.isActive) {
+        if (this.state.getState()) {
             this.log.info(
                     this.name,
-                    "Передача данны со скоростью " + getBandwidth() + " МБ/с");
+                    "Передача данных со скоростью " + getBandwidth() + " МБ/с");
             sendData();
             consumeBattery(0.05);
         } else {
@@ -30,7 +30,7 @@ public class CommunicationSatellite extends Satellite {
     @Override
     public String toString() {
         return "CommunicationSatellite{bandwidth=" + getBandwidth() +
-                ", name='" + this.name + "', isActive=" + this.isActive +
-                ", batteryLevel=" + this.batteryLevel + "}";
+                ", name='" + this.name + "', isActive=" + this.state.getState() +
+                ", batteryLevel=" + this.energy.getBatteryLevel() + "}";
     }
 }

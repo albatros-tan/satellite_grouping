@@ -2,48 +2,48 @@ public abstract class Satellite {
     private final double criticalBatteryLevel = 0.2;
     protected ILog log;
     protected String name;
-    protected boolean isActive;
-    protected double batteryLevel;
+    protected SatelliteState state = new SatelliteState();
+    protected EnergySystem energy;
 
     public Satellite(String name, double batteryLevel, ILog log) {
         this.name = name;
         this.log = log;
-        this.batteryLevel = batteryLevel;
+        this.energy = new EnergySystem(batteryLevel);
         this.log.printMsg(
-                "Создан путник: " + this.name + " (заряд: " + this.batteryLevel * 100 + "%)");
+                "Создан путник: "
+                        + this.name
+                        + " (заряд: " + this.energy.getPercentBatteryLevel() + "%)");
     }
 
     public boolean activate() {
-        if (this.batteryLevel <= this.criticalBatteryLevel) {
+        if (this.energy.getBatteryLevel() <= this.criticalBatteryLevel) {
             this.log.error(
                     this.name,
                     "Не удалось активировать",
-                    "Уровень заряда " + this.batteryLevel * 100 + "% ниже критического");
+                    "Уровень заряда "
+                            + this.energy.getPercentBatteryLevel()
+                            + "% ниже критического");
             return false;
         }
-        this.isActive = true;
-        this.log.info(this.name, "Успешно активирован!");
+        String stateMessage = this.state.activate();
+        this.log.info(this.name, stateMessage);
         return true;
     }
 
     public void deactivate() {
-        if (this.isActive == true) {
-            this.isActive = false;
-            this.log.info(this.name, "Отключен!");
-        } else {
-            this.log.warning(this.name, "Уже отключен!");
-        }
+        String stateMessage = this.state.deactivate();
+        this.log.info(this.name, stateMessage);
     }
 
     public void consumeBattery(double amountEnergy) {
-        if (amountEnergy > this.batteryLevel) {
+        if (amountEnergy > this.energy.getBatteryLevel()) {
             this.log.error(this.name,
                     "Операция не может быть выполнена",
                     "Низкий уровень заряда");
         } else {
-            this.batteryLevel -= amountEnergy;
+            this.energy.consume(amountEnergy);
         }
-        if (this.batteryLevel <= this.criticalBatteryLevel) {
+        if (this.energy.getBatteryLevel() <= this.criticalBatteryLevel) {
             deactivate();
         }
     }
