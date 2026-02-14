@@ -34,6 +34,10 @@ public class SatelliteConstellation {
         return this.satellites;
     }
 
+    public String getConstellationName() {
+        return this.constellationName;
+    }
+
     public void executeAllMission() {
         activateAllSatellites();
         this.log.printMsg(
@@ -42,4 +46,5 @@ public class SatelliteConstellation {
             satellite.performMission();
         }
     }
+
 }

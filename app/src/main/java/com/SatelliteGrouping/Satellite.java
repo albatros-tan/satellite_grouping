@@ -50,6 +50,14 @@ public abstract class Satellite {
         }
     }
 
+    public String getName() {
+        return this.name;
+    }
+
+    public void getState() {
+        this.log.info(this.name, "Активен: " + this.state.getState());
+    }
+
     protected abstract void performMission();
 
 }

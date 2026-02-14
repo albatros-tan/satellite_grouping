@@ -18,7 +18,7 @@ public class SatelliteState {
     public String deactivate() {
         if (this.isActive == true) {
             this.isActive = false;
-            return "Отключен!";
+            return "Отключен!"; 
         }
         return "Уже отключен!";
     }
